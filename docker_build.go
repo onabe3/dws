@@ -8,7 +8,6 @@ import (
 	"io"
 	"log"
 	"os"
-	"time"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
@@ -90,22 +89,23 @@ FROM ubuntu:latest
 			Dockerfile: "Dockerfile",
 		},
 	)
-
-	time.Sleep(10 * time.Second)
-
 	if err != nil {
 		log.Fatalf("Image build error: %v", err)
 	}
 	defer buildResp.Body.Close()
 
 	// Buildのログを表示する
-	stdcopy.StdCopy(os.Stdout, os.Stderr, buildResp.Body)
+	fmt.Println((stdcopy.StdCopy(os.Stdout, os.Stderr, buildResp.Body)))
 
 	// イメージを元に新しいコンテナを作成する
 	config := &container.Config{
 		Image: imageName,
 	}
-	resp, err := cli.ContainerCreate(context.Background(), config, nil, nil, nil, "")
+
+	// コンテナ名を定義
+	containerName := "ASANO"
+
+	resp, err := cli.ContainerCreate(context.Background(), config, nil, nil, nil, containerName)
 	if err != nil {
 		log.Fatalf("Container create error: %v", err)
 	}
