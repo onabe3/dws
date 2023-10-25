@@ -2,7 +2,10 @@ module dws
 
 go 1.20
 
-require github.com/docker/docker v24.0.6+incompatible
+require (
+	github.com/docker/docker v24.0.6+incompatible
+	github.com/gorilla/mux v1.8.0
+)
 
 require (
 	github.com/Microsoft/go-winio v0.6.1 // indirect
